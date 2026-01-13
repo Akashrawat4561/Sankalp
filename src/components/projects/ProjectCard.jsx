@@ -74,10 +74,29 @@ const ProjectCard = ({ project, onViewDetails, onViewMap }) => {
         <div className="group bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-xl hover:border-blue-200 transition-all duration-300">
             {/* Image Section */}
             <div className="relative h-48 bg-gradient-to-br overflow-hidden">
-                <div className={`absolute inset-0 bg-gradient-to-br ${getTypeColor(project.type)} opacity-90`} />
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <Building2 className="w-20 h-20 text-white/30" />
+                {/* Project Image with Fallback */}
+                {project.image ? (
+                    <img
+                        src={project.image}
+                        alt={project.name}
+                        className="absolute inset-0 w-full h-full object-cover"
+                        onError={(e) => {
+                            e.target.style.display = 'none';
+                            e.target.nextSibling.style.display = 'flex';
+                        }}
+                    />
+                ) : null}
+                {/* Fallback Gradient Background */}
+                <div
+                    className={`absolute inset-0 bg-gradient-to-br ${getTypeColor(project.type)} ${project.image ? 'hidden' : ''}`}
+                    style={{ display: project.image ? 'none' : 'block' }}
+                >
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <Building2 className="w-20 h-20 text-white/30" />
+                    </div>
                 </div>
+                {/* Dark Overlay for better text visibility */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
 
                 {/* Status Badge */}
                 <div className="absolute top-4 left-4">
@@ -98,16 +117,30 @@ const ProjectCard = ({ project, onViewDetails, onViewMap }) => {
                     <RatingBadge rating={rating.overall} size="md" />
                 </div>
 
-                {/* Map Pin Button */}
-                <button
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        onViewMap?.(project);
-                    }}
-                    className="absolute bottom-4 left-4 p-2 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-sm transition-colors"
-                >
-                    <MapPin className="w-5 h-5 text-white" />
-                </button>
+                {/* Location Thumbnail */}
+                <div className="absolute bottom-4 left-4 flex items-center gap-2">
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onViewMap?.(project);
+                        }}
+                        className="relative group/map"
+                    >
+                        {/* Mini Map Thumbnail using OpenStreetMap */}
+                        <div className="w-12 h-12 rounded-lg overflow-hidden border-2 border-white/50 shadow-lg hover:border-white transition-all bg-blue-100">
+                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-400 to-blue-600">
+                                <MapPin className="w-5 h-5 text-white" />
+                            </div>
+                            <div className="absolute inset-0 bg-black/10 group-hover/map:bg-black/0 transition-colors" />
+                        </div>
+                    </button>
+                    {/* Location Text */}
+                    <div className="hidden sm:block">
+                        <p className="text-xs text-white/90 font-medium drop-shadow-lg">
+                            {project.location.city}
+                        </p>
+                    </div>
+                </div>
             </div>
 
             {/* Content Section */}
@@ -173,8 +206,8 @@ const ProjectCard = ({ project, onViewDetails, onViewMap }) => {
                     <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                         <div
                             className={`h-2 rounded-full transition-all duration-500 ${project.progress === 100
-                                    ? 'bg-green-500'
-                                    : 'bg-gradient-to-r from-blue-500 to-indigo-600'
+                                ? 'bg-green-500'
+                                : 'bg-gradient-to-r from-blue-500 to-indigo-600'
                                 }`}
                             style={{ width: `${project.progress}%` }}
                         />

@@ -20,6 +20,7 @@ import {
     Timer,
     Target
 } from 'lucide-react';
+import CommentSection from '../comments/CommentSection';
 import RatingBadge, { RatingBreakdown } from '../common/RatingBadge';
 import { calculateProjectRating, getRiskLevel } from '../../utils/ratingAlgorithm';
 import { contractorsData } from '../../data/contractorsData';
@@ -57,7 +58,8 @@ const ProjectDetailModal = ({ project, isOpen, onClose, onViewContractor, onView
         { id: 'overview', label: 'Overview', icon: <FileText className="w-4 h-4" /> },
         { id: 'bidding', label: 'Bidding Details', icon: <Gavel className="w-4 h-4" /> },
         { id: 'timeline', label: 'Timeline', icon: <Timer className="w-4 h-4" /> },
-        { id: 'rating', label: 'AI Rating', icon: <Award className="w-4 h-4" /> }
+        { id: 'rating', label: 'AI Rating', icon: <Award className="w-4 h-4" /> },
+        { id: 'comments', label: 'Comments', icon: <Users className="w-4 h-4" /> }
     ];
 
     return (
@@ -379,6 +381,11 @@ const ProjectDetailModal = ({ project, isOpen, onClose, onViewContractor, onView
                                 </p>
                             </div>
                         </div>
+                    )}
+
+                    {/* Comments Tab */}
+                    {activeTab === 'comments' && (
+                        <CommentSection projectId={project.id} projectName={project.name} />
                     )}
                 </div>
 

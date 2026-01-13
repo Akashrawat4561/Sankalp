@@ -38,7 +38,7 @@ export const projectsData = [
       "Uses advanced TBM technology",
       "Will serve 3 lakh daily passengers"
     ],
-    image: "/images/projects/metro-underground.jpg"
+    image: "https://images.unsplash.com/photo-1565043666747-69f6646db940?w=800&q=80"
   },
   {
     id: 2,
@@ -76,7 +76,7 @@ export const projectsData = [
       "Open E-Tender with L1 selection",
       "Completed on time"
     ],
-    image: "/images/projects/bhanwarkuan-flyover.jpg"
+    image: "https://images.unsplash.com/photo-1545893835-abaa50cbe628?w=800&q=80"
   },
   {
     id: 3,
@@ -114,7 +114,7 @@ export const projectsData = [
       "Beautification of Khan River",
       "Public recreational space created"
     ],
-    image: "/images/projects/riverfront.jpg"
+    image: "https://images.unsplash.com/photo-1519922639192-e73293ca430e?w=800&q=80"
   },
   {
     id: 4,
@@ -152,7 +152,7 @@ export const projectsData = [
       "Improved drainage system",
       "100% completion on schedule"
     ],
-    image: "/images/projects/raj-mohalla-road.jpg"
+    image: "https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=800&q=80"
   },
   {
     id: 5,
@@ -190,7 +190,7 @@ export const projectsData = [
       "Supports Swachh Bharat mission",
       "Handles 500 tons/day capacity"
     ],
-    image: "/images/projects/garbage-station.jpg"
+    image: "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=800&q=80"
   },
   {
     id: 6,
@@ -228,7 +228,7 @@ export const projectsData = [
       "Airport-like amenities planned",
       "Skywalks and modern concourse"
     ],
-    image: "/images/projects/railway-station.jpg"
+    image: "https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=800&q=80"
   },
   {
     id: 7,
@@ -266,7 +266,7 @@ export const projectsData = [
       "Specialists in heritage conservation",
       "Preserving 200+ year old structure"
     ],
-    image: "/images/projects/rajwada-palace.jpg"
+    image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?w=800&q=80"
   },
   {
     id: 8,
@@ -304,7 +304,7 @@ export const projectsData = [
       "Prevents future road digging",
       "Smart traffic management"
     ],
-    image: "/images/projects/smart-roads.jpg"
+    image: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&q=80"
   },
   {
     id: 9,
@@ -342,7 +342,7 @@ export const projectsData = [
       "Heritage conservation specialists",
       "Cultural preservation investment"
     ],
-    image: "/images/projects/gopal-mandir.jpg"
+    image: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=800&q=80"
   },
   {
     id: 10,
@@ -380,7 +380,7 @@ export const projectsData = [
       "10% below estimated cost",
       "Validates Swachh Bharat mission"
     ],
-    image: "/images/projects/sludge-plant.jpg"
+    image: "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=800&q=80"
   }
 ];
 
