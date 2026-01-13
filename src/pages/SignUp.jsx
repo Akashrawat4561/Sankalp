@@ -1,7 +1,7 @@
 // pages/SignUp.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Shield, Eye, EyeOff, Check, AlertCircle } from 'lucide-react';
+import { Shield, Eye, EyeOff, Check, AlertCircle, Users, Search, MapPin, Star } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const SignUp = () => {
@@ -10,7 +10,6 @@ const SignUp = () => {
     email: '',
     password: '',
     confirmPassword: '',
-    role: 'citizen',
     agreeToTerms: false
   });
 
@@ -22,13 +21,6 @@ const SignUp = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const roles = [
-    { value: 'citizen', label: 'Citizen', description: 'Track projects and contribute feedback' },
-    { value: 'contractor', label: 'Contractor', description: 'Register and manage your projects' },
-    { value: 'auditor', label: 'Auditor', description: 'Access advanced analytics tools' },
-    { value: 'government', label: 'Government Official', description: 'Monitor and manage infrastructure projects' }
-  ];
-
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -36,12 +28,10 @@ const SignUp = () => {
       [name]: type === 'checkbox' ? checked : value
     }));
 
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
 
-    // Calculate password strength
     if (name === 'password') {
       calculatePasswordStrength(value);
     }
@@ -64,7 +54,7 @@ const SignUp = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required';
     }
@@ -96,7 +86,7 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const newErrors = validateForm();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -106,18 +96,16 @@ const SignUp = () => {
     setIsLoading(true);
 
     try {
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Mock successful registration
+
       const mockUser = {
         id: '1',
         email: formData.email,
         name: formData.name,
-        role: formData.role,
+        role: 'citizen',
         token: 'mock-jwt-token'
       };
-      
+
       login(mockUser);
       navigate('/home');
     } catch (error) {
@@ -143,8 +131,8 @@ const SignUp = () => {
                 </span>
               </div>
 
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Create Account</h1>
-              <p className="text-gray-600 mb-8">Join the transparency revolution</p>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Join as a Citizen</h1>
+              <p className="text-gray-600 mb-8">Track infrastructure projects in your city</p>
 
               {errors.general && (
                 <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center text-red-700">
@@ -153,7 +141,7 @@ const SignUp = () => {
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Full Name
@@ -163,9 +151,8 @@ const SignUp = () => {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className={`w-full px-4 py-3 rounded-lg border ${
-                      errors.name ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
-                    } focus:ring-2 focus:ring-opacity-20 transition-colors`}
+                    className={`w-full px-4 py-3 rounded-lg border ${errors.name ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
+                      } focus:ring-2 focus:ring-opacity-20 transition-colors`}
                     placeholder="Enter your full name"
                   />
                   {errors.name && (
@@ -182,45 +169,13 @@ const SignUp = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className={`w-full px-4 py-3 rounded-lg border ${
-                      errors.email ? 'border-red-300 focus:border-red-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
-                    } focus:ring-2 focus:ring-opacity-20 transition-colors`}
+                    className={`w-full px-4 py-3 rounded-lg border ${errors.email ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
+                      } focus:ring-2 focus:ring-opacity-20 transition-colors`}
                     placeholder="Enter your email"
                   />
                   {errors.email && (
                     <p className="mt-1 text-sm text-red-600">{errors.email}</p>
                   )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Select Role
-                  </label>
-                  <div className="grid grid-cols-2 gap-3">
-                    {roles.map((role) => (
-                      <label
-                        key={role.value}
-                        className={`flex flex-col p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                          formData.role === role.value
-                            ? 'border-blue-500 bg-blue-50'
-                            : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50/50'
-                        }`}
-                      >
-                        <div className="flex items-center">
-                          <input
-                            type="radio"
-                            name="role"
-                            value={role.value}
-                            checked={formData.role === role.value}
-                            onChange={handleChange}
-                            className="h-4 w-4 text-blue-600 focus:ring-blue-500"
-                          />
-                          <span className="ml-3 font-medium text-gray-900">{role.label}</span>
-                        </div>
-                        <span className="mt-2 text-xs text-gray-500">{role.description}</span>
-                      </label>
-                    ))}
-                  </div>
                 </div>
 
                 <div>
@@ -233,9 +188,8 @@ const SignUp = () => {
                       name="password"
                       value={formData.password}
                       onChange={handleChange}
-                      className={`w-full px-4 py-3 rounded-lg border ${
-                        errors.password ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
-                      } focus:ring-2 focus:ring-opacity-20 transition-colors pr-12`}
+                      className={`w-full px-4 py-3 rounded-lg border ${errors.password ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
+                        } focus:ring-2 focus:ring-opacity-20 transition-colors pr-12`}
                       placeholder="Create a strong password"
                     />
                     <button
@@ -249,15 +203,14 @@ const SignUp = () => {
                   {errors.password && (
                     <p className="mt-1 text-sm text-red-600">{errors.password}</p>
                   )}
-                  
-                  {/* Password Strength Meter */}
+
                   <div className="mt-2">
                     <div className="flex justify-between text-xs mb-1">
                       <span className="text-gray-600">Password strength</span>
                       <span className="font-medium">{passwordStrength}%</span>
                     </div>
                     <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                      <div 
+                      <div
                         className={`h-full ${getStrengthColor(passwordStrength)} transition-all duration-300`}
                         style={{ width: `${passwordStrength}%` }}
                       />
@@ -275,9 +228,8 @@ const SignUp = () => {
                       name="confirmPassword"
                       value={formData.confirmPassword}
                       onChange={handleChange}
-                      className={`w-full px-4 py-3 rounded-lg border ${
-                        errors.confirmPassword ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
-                      } focus:ring-2 focus:ring-opacity-20 transition-colors pr-12`}
+                      className={`w-full px-4 py-3 rounded-lg border ${errors.confirmPassword ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
+                        } focus:ring-2 focus:ring-opacity-20 transition-colors pr-12`}
                       placeholder="Confirm your password"
                     />
                     <button
@@ -321,9 +273,8 @@ const SignUp = () => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className={`w-full py-3.5 px-4 rounded-lg text-white font-medium bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl ${
-                    isLoading ? 'opacity-75 cursor-not-allowed' : ''
-                  }`}
+                  className={`w-full py-3.5 px-4 rounded-lg text-white font-medium bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl ${isLoading ? 'opacity-75 cursor-not-allowed' : ''
+                    }`}
                 >
                   {isLoading ? (
                     <span className="flex items-center justify-center">
@@ -333,11 +284,11 @@ const SignUp = () => {
                       </svg>
                       Creating Account...
                     </span>
-                  ) : 'Create Account'}
+                  ) : 'Create Free Account'}
                 </button>
               </form>
 
-              <div className="mt-8 pt-8 border-t border-gray-200">
+              <div className="mt-6 pt-6 border-t border-gray-200">
                 <p className="text-center text-gray-600">
                   Already have an account?{' '}
                   <Link to="/signin" className="text-blue-600 hover:text-blue-700 font-medium">
@@ -347,47 +298,59 @@ const SignUp = () => {
               </div>
             </div>
 
-            {/* Right Column - Benefits */}
+            {/* Right Column - Citizen Benefits */}
             <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-8 md:p-10 text-white">
-              <h2 className="text-2xl font-bold mb-6">Benefits of Joining</h2>
-              
+              <h2 className="text-2xl font-bold mb-2">Your Right to Know</h2>
+              <p className="text-blue-100 mb-8">Hold your government accountable with real-time project transparency</p>
+
               <div className="space-y-6">
                 {[
                   {
-                    title: 'Real-time Project Tracking',
-                    description: 'Monitor infrastructure projects in your area with live updates and alerts'
+                    icon: <Search className="w-5 h-5" />,
+                    title: 'Track Any Project',
+                    description: 'Search and monitor infrastructure projects in your city with detailed progress reports'
                   },
                   {
-                    title: 'AI-Powered Insights',
-                    description: 'Get intelligent analysis of project data to identify risks and anomalies'
+                    icon: <Star className="w-5 h-5" />,
+                    title: 'AI Transparency Ratings',
+                    description: 'See unbiased ratings based on budget efficiency, timeline adherence, and contractor performance'
                   },
                   {
-                    title: 'Transparency Dashboard',
-                    description: 'Access comprehensive visualizations of project budgets and timelines'
+                    icon: <MapPin className="w-5 h-5" />,
+                    title: 'Map-Based Exploration',
+                    description: 'Find projects near you with our interactive map showing all active infrastructure work'
                   },
                   {
-                    title: 'Community Reporting',
-                    description: 'Contribute to public oversight by reporting issues and providing feedback'
+                    icon: <Users className="w-5 h-5" />,
+                    title: 'Contractor Records',
+                    description: 'View contractor history, past project performance, and public ratings'
                   }
                 ].map((benefit, index) => (
                   <div key={index} className="flex items-start">
                     <div className="flex-shrink-0">
-                      <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                        <Check className="w-5 h-5" />
+                      <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                        {benefit.icon}
                       </div>
                     </div>
                     <div className="ml-4">
                       <h3 className="font-bold text-lg">{benefit.title}</h3>
-                      <p className="text-blue-100 mt-1">{benefit.description}</p>
+                      <p className="text-blue-100 mt-1 text-sm">{benefit.description}</p>
                     </div>
                   </div>
                 ))}
               </div>
 
-              <div className="mt-12 p-6 bg-white/10 rounded-2xl backdrop-blur-sm">
-                <h3 className="font-bold text-lg mb-3">Government Verified</h3>
-                <p className="text-blue-100">
-                  SANKALP is officially recognized by the Ministry of Statistics and Programme Implementation
+              <div className="mt-10 p-5 bg-white/10 rounded-2xl backdrop-blur-sm">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="flex -space-x-2">
+                    {['bg-green-400', 'bg-blue-400', 'bg-purple-400'].map((color, i) => (
+                      <div key={i} className={`w-8 h-8 ${color} rounded-full border-2 border-white/20`} />
+                    ))}
+                  </div>
+                  <span className="text-sm font-medium">1,000+ citizens already tracking</span>
+                </div>
+                <p className="text-blue-100 text-sm">
+                  Join fellow citizens in bringing transparency to public infrastructure spending
                 </p>
               </div>
             </div>

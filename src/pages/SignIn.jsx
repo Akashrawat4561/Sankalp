@@ -1,7 +1,7 @@
 // pages/SignIn.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Shield, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { Shield, Eye, EyeOff, AlertCircle, Search, MapPin, Star } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const SignIn = () => {
@@ -18,7 +18,6 @@ const SignIn = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -26,13 +25,13 @@ const SignIn = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.email) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Email is invalid';
     }
-    
+
     if (!formData.password) {
       newErrors.password = 'Password is required';
     }
@@ -42,7 +41,7 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const newErrors = validateForm();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -52,18 +51,16 @@ const SignIn = () => {
     setIsLoading(true);
 
     try {
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Mock successful login
+
       const mockUser = {
         id: '1',
         email: formData.email,
-        name: 'John Doe',
+        name: formData.email.split('@')[0],
         role: 'citizen',
         token: 'mock-jwt-token'
       };
-      
+
       login(mockUser);
       navigate('/home');
     } catch (error) {
@@ -83,7 +80,7 @@ const SignIn = () => {
               <Shield className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
-            <p className="text-gray-600 mt-2">Sign in to your SANKALP account</p>
+            <p className="text-gray-600 mt-2">Continue tracking infrastructure projects</p>
           </div>
 
           {errors.general && (
@@ -103,9 +100,8 @@ const SignIn = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-lg border ${
-                  errors.email ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
-                } focus:ring-2 focus:ring-opacity-20 transition-colors`}
+                className={`w-full px-4 py-3 rounded-lg border ${errors.email ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
+                  } focus:ring-2 focus:ring-opacity-20 transition-colors`}
                 placeholder="Enter your email"
               />
               {errors.email && (
@@ -123,9 +119,8 @@ const SignIn = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-lg border ${
-                    errors.password ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
-                  } focus:ring-2 focus:ring-opacity-20 transition-colors pr-12`}
+                  className={`w-full px-4 py-3 rounded-lg border ${errors.password ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
+                    } focus:ring-2 focus:ring-opacity-20 transition-colors pr-12`}
                   placeholder="Enter your password"
                 />
                 <button
@@ -160,9 +155,8 @@ const SignIn = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className={`w-full py-3.5 px-4 rounded-lg text-white font-medium bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl ${
-                isLoading ? 'opacity-75 cursor-not-allowed' : ''
-              }`}
+              className={`w-full py-3.5 px-4 rounded-lg text-white font-medium bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl ${isLoading ? 'opacity-75 cursor-not-allowed' : ''
+                }`}
             >
               {isLoading ? (
                 <span className="flex items-center justify-center">
@@ -176,11 +170,25 @@ const SignIn = () => {
             </button>
           </form>
 
-          <div className="mt-8 pt-8 border-t border-gray-200">
+          {/* Quick Features */}
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <div className="grid grid-cols-3 gap-2 mb-6">
+              {[
+                { icon: <Search className="w-4 h-4" />, label: 'Search' },
+                { icon: <MapPin className="w-4 h-4" />, label: 'Map View' },
+                { icon: <Star className="w-4 h-4" />, label: 'Ratings' }
+              ].map((item, i) => (
+                <div key={i} className="flex flex-col items-center p-2 bg-gray-50 rounded-lg">
+                  <div className="text-blue-600">{item.icon}</div>
+                  <span className="text-xs text-gray-600 mt-1">{item.label}</span>
+                </div>
+              ))}
+            </div>
+
             <p className="text-center text-gray-600">
               Don't have an account?{' '}
               <Link to="/signup" className="text-blue-600 hover:text-blue-700 font-medium">
-                Create Account
+                Join Free
               </Link>
             </p>
             <div className="mt-4">
